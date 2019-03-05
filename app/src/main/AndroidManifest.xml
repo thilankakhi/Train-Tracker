@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ViewTrainSchedule"></activity>
+        <activity android:name=".viewPagerAdapter" />
         <activity android:name=".View_v" />
         <activity android:name=".TrainSchedule" />
         <activity android:name=".Signup" />

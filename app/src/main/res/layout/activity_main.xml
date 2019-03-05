@@ -23,7 +23,7 @@
             android:orientation="vertical">
 
             <customfonts.MyEditText
-                android:id="@+id/username"
+                android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="22dp"
@@ -31,7 +31,7 @@
                 android:layout_marginRight="35dp"
                 android:background="#0000"
                 android:drawableRight="@drawable/user"
-                android:hint="Username"
+                android:hint="Email"
                 android:inputType="text"
                 android:padding="16dp"
                 android:textColor="#ADCCE2"

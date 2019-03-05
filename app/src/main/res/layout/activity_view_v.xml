@@ -30,7 +30,7 @@
             android:layout_height="29dp"
             android:layout_gravity="center"
             android:layout_marginLeft="250dp"
-            android:src="@drawable/share" />
+            android:src="@drawable/ic_action_share" />
 
         <ImageView
             android:id="@+id/home"
@@ -38,7 +38,7 @@
             android:layout_height="29dp"
             android:layout_gravity="center"
             android:layout_marginLeft="30dp"
-            android:src="@drawable/home" />
+            android:src="@drawable/ic_action_home" />
 
     </LinearLayout>
 
