@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/account"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginBottom="21dp"
+            android:orientation="vertical">
+
+            <customfonts.MyEditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="22dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="35dp"
+                android:background="#0000"
+                android:drawableRight="@drawable/user"
+                android:hint="Username"
+                android:inputType="text"
+                android:padding="16dp"
+                android:textColor="#ADCCE2"
+                android:textColorHint="#ADCCE2"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:background="#ADCCE2" />
+
+            <customfonts.MyEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="22dp"
+                android:layout_marginRight="35dp"
+                android:background="#0000"
+                android:drawableRight="@drawable/pasword"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:maxLength="12"
+                android:padding="16dp"
+                android:textColor="#ADCCE2"
+                android:textColorHint="#ADCCE2"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="10dp"
+                android:background="#ADCCE2" />
+
+            <customfonts.MyTextView
+                android:id="@+id/signin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="28dp"
+                android:background="@drawable/angle"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="Sign In"
+                android:textColor="#fff"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+
+        <customfonts.MyTextView
+            android:id="@+id/signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="79dp"
+            android:gravity="center"
+            android:text="Sign UP"
+            android:textColor="#54abee"
+            android:textSize="25dp" />
+
+
+        <TextView
+            android:id="@+id/account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="126dp"
+            android:gravity="center"
+            android:paddingBottom="16dp"
+            android:text="No account yet? Create one"
+            android:textColor="#c4c5c9"
+            android:textSize="16dp" />
+
+        <LinearLayout
+            android:id="@+id/circle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="97dp"
+            android:background="@drawable/circleangle"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="1dp">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/angle2" />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:paddingLeft="3dp"
+                    android:src="@drawable/ic_action_train" />
+            </FrameLayout>
+
+            <customfonts.MyTextView
+                android:id="@+id/appName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:text="Train Tracker"
+                android:textColor="#fff"
+                android:textSize="22dp" />
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>

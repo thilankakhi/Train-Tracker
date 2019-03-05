@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="37dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/sback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:src="@drawable/left" />
+
+        <ImageView
+            android:id="@+id/share"
+            android:layout_width="wrap_content"
+            android:layout_height="29dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="200dp"
+            android:src="@drawable/ic_action_share" />
+
+        <ImageView
+            android:id="@+id/home"
+            android:layout_width="wrap_content"
+            android:layout_height="29dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="70dp"
+            android:src="@drawable/ic_action_home" />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background">
+
+
+        <LinearLayout
+            android:id="@+id/circle2"
+            android:layout_width="330dp"
+            android:layout_height="93dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="300dp"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="1dp">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/angle2" />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:paddingLeft="3dp"
+                    android:src="@drawable/ic_action_settings" />
+            </FrameLayout>
+
+            <customfonts.MyTextView
+                android:id="@+id/settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:text="Settings"
+                android:textColor="#fff"
+                android:textSize="22dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/circle3"
+            android:layout_width="190dp"
+            android:layout_height="103dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="400dp"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="1dp">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/angle2" />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:paddingLeft="3dp"
+                    android:src="@drawable/ic_action_help" />
+            </FrameLayout>
+
+            <customfonts.MyTextView
+                android:id="@+id/help"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:text="Help"
+                android:textColor="#fff"
+                android:textSize="22dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/circle4"
+            android:layout_width="190dp"
+            android:layout_height="103dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="500dp"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="1dp">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/angle2" />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:paddingLeft="3dp"
+                    android:src="@drawable/ic_action_logout" />
+            </FrameLayout>
+
+            <customfonts.MyTextView
+                android:id="@+id/logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:text="Logout"
+                android:textColor="#fff"
+                android:textSize="22dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/circle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="140dp"
+            android:background="@drawable/circleangle"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="1dp">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/angle2" />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:paddingLeft="3dp"
+                    android:src="@drawable/ic_action_train" />
+            </FrameLayout>
+
+            <customfonts.MyTextView
+                android:id="@+id/signupforfree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:text="Train Tracker"
+                android:textColor="#fff"
+                android:textSize="22dp" />
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>
