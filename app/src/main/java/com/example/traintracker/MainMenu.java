@@ -87,16 +87,19 @@ public class MainMenu extends AppCompatActivity {
     }
 
     public void openViewTrainSchedule(){
+        //open activity to view train schedule
         Intent intent = new Intent(this, ViewTrainSchedule.class);
         startActivity(intent);
     }
 
     public  void openViewCurrentLocation(){
+        //open activity to view current location fo a given train
         Intent intent = new Intent(this, View_v.class);
         startActivity(intent);
     }
 
     public void openViewExpectedTimes(){
+        //open activity to view expected arrival times
         Intent intent = new Intent(this, View_v.class);
         startActivity(intent);
     }
