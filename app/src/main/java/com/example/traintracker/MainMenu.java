@@ -1,9 +1,12 @@
 package com.example.traintracker;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +22,8 @@ public class MainMenu extends AppCompatActivity {
     ImageView sback;
     ImageView home;
     ImageView share;
+    TextView errorMessage;
+    EditText train;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,25 +31,43 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
 
 
-        viewCurrentLocation = (LinearLayout) findViewById(R.id.current_location);
-        viewExpectedTimes = (LinearLayout)findViewById(R.id.arrival_times);
-        viewTrainSchedule = (LinearLayout)findViewById(R.id.train_shedule);
+        viewCurrentLocation =  findViewById(R.id.current_location);
+        viewExpectedTimes = findViewById(R.id.arrival_times);
+        viewTrainSchedule = findViewById(R.id.train_shedule);
 
-        sback = (ImageView)findViewById(R.id.sback);
-        home = (ImageView)findViewById(R.id.home);
-        share = (ImageView)findViewById(R.id.share);
+        sback = findViewById(R.id.sback);
+        home = findViewById(R.id.home);
+        share = findViewById(R.id.share);
+        errorMessage = findViewById(R.id.error_message);
+        train = findViewById(R.id.selected_train);
+
 
         viewCurrentLocation.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                openViewCurrentLocation();
+
+                final String selectedTrain;
+                selectedTrain = train.getText().toString();
+
+                if(selectedTrain.isEmpty()) {
+                    errorMessage.setText("Select Train");
+                }else {
+                    openViewCurrentLocation();
+                }
             }
         });
 
         viewExpectedTimes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openViewExpectedTimes();
+                final String selectedTrain;
+                selectedTrain = train.getText().toString();
+                if(selectedTrain.isEmpty()) {
+                    errorMessage.setText("Select Train");
+                }else {
+                    openViewExpectedTimes();
+                }
             }
         });
 
@@ -96,11 +119,15 @@ public class MainMenu extends AppCompatActivity {
         //open activity to view current location fo a given train
         Intent intent = new Intent(this, View_v.class);
         startActivity(intent);
+        /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ViewCurrentLocation fragmentDemo = ViewCurrentLocation.newInstance();
+        ft.replace(R.id.view_current_location, fragmentDemo);
+        ft.commit();*/
     }
 
     public void openViewExpectedTimes(){
         //open activity to view expected arrival times
-        Intent intent = new Intent(this, View_v.class);
+        Intent intent = new Intent(this, ViewExpectedTimes.class);
         startActivity(intent);
     }
 }

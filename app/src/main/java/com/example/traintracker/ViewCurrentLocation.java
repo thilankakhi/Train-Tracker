@@ -4,16 +4,25 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
 
@@ -24,9 +33,16 @@ public class ViewCurrentLocation extends Fragment implements OnMapReadyCallback{
     GoogleMap mgoogleMap;
     MapView mapView;
     View view;
+    String server_url= "http://eca2f37e.ngrok.io/trains/currentLocation";
+    Double latitude, longtitue;
 
     public ViewCurrentLocation() {
         // Required empty public constructor
+    }
+
+    public static ViewCurrentLocation newInstance() {
+        ViewCurrentLocation viewCurrentLocation = new ViewCurrentLocation();
+        return viewCurrentLocation;
     }
 
 
@@ -35,6 +51,34 @@ public class ViewCurrentLocation extends Fragment implements OnMapReadyCallback{
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_view_current_location,container,false);
         mapView =  view.findViewById(R.id.map);
+
+
+        //make request to get current location of the train
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, server_url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            latitude = response.getDouble("latitude");
+                            longtitue =  response.getDouble("longitude");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Creation", error.toString());
+                        error.printStackTrace();
+                    }
+                });
+        MySingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+        //
+
 
         return view;
     }
@@ -57,7 +101,11 @@ public class ViewCurrentLocation extends Fragment implements OnMapReadyCallback{
         mgoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(0,0)));
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longtitue)));
+
+        LatLng redmond = new LatLng(latitude, longtitue);
+
+        mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(redmond, 3));
 
 
     }

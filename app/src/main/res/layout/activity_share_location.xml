@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/img"
-    tools:context=".Signup">
+    tools:context=".ShareLocation">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -72,10 +72,12 @@
                 android:background="@drawable/angle"
                 android:gravity="center"
                 android:padding="16dp"
-                android:text="Share my Location"
+                android:text="@string/share"
                 android:textColor="#fff"
-                android:textSize="16dp"/>
+                android:textSize="16dp"
+                android:onClick="shareLocation"/>
 
         </LinearLayout>
+
     </RelativeLayout>
 </FrameLayout>

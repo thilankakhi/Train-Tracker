@@ -30,9 +30,9 @@ public class View_v extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_v);
 
-        sback = (ImageView)findViewById(R.id.sback);
+        sback = findViewById(R.id.sback);
 
-        tableLayout = (TabLayout) findViewById(R.id.tabs);
+        tableLayout = findViewById(R.id.tabs);
 
         viewPager = findViewById(R.id.pager);
         adapter = new viewPagerAdapter(getSupportFragmentManager());

@@ -56,7 +56,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="0dp"
-            android:layout_marginBottom="159dp"
+            android:layout_marginBottom="140dp"
             android:orientation="vertical">
 
             <customfonts.MyEditText
@@ -66,9 +66,9 @@
                 android:layout_marginLeft="22dp"
                 android:layout_marginRight="35dp"
                 android:background="#0000"
-                android:hint="From"
                 android:inputType="text"
                 android:padding="16dp"
+                android:text="Colombo"
                 android:textColor="#ADCCE2"
                 android:textColorHint="#ADCCE2"
                 android:textSize="16dp" />
@@ -81,15 +81,15 @@
                 android:background="#ADCCE2" />
 
             <customfonts.MyEditText
-                android:id="@+id/to_sation"
+                android:id="@+id/to_station"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="22dp"
                 android:layout_marginRight="35dp"
                 android:background="#0000"
-                android:hint="To"
                 android:inputType="text"
                 android:padding="16dp"
+                android:text="Matara"
                 android:textColor="#ADCCE2"
                 android:textColorHint="#ADCCE2"
                 android:textSize="16dp" />
@@ -122,6 +122,46 @@
                 android:layout_marginRight="40dp"
                 android:background="#ADCCE2" />
 
+            <EditText
+                android:id="@+id/start_time"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="22dp"
+                android:layout_marginRight="35dp"
+                android:background="#0000"
+                android:inputType="time"
+                android:padding="16dp"
+                android:text="00:00:00"
+                android:textColor="#ADCCE2"
+                android:textColorHint="#ADCCE2" />
+
+            <View
+                android:layout_width="180dp"
+                android:layout_height="1dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:background="#ADCCE2" />
+
+            <EditText
+                android:id="@+id/end_time"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="22dp"
+                android:layout_marginRight="35dp"
+                android:background="#0000"
+                android:inputType="time"
+                android:padding="16dp"
+                android:text="23:59:59"
+                android:textColor="#ADCCE2"
+                android:textColorHint="#ADCCE2" />
+
+            <View
+                android:layout_width="180dp"
+                android:layout_height="1dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:background="#ADCCE2" />
+
             <customfonts.MyTextView
                 android:id="@+id/view_schedule"
                 android:layout_width="match_parent"
@@ -134,9 +174,11 @@
                 android:background="@drawable/angle"
                 android:gravity="center"
                 android:padding="16dp"
-                android:text="View Schedule"
+                android:text="@string/viewTrainSchedule"
                 android:textColor="#fff"
                 android:textSize="16dp" />
+
+
         </LinearLayout>
 
     </RelativeLayout>

@@ -4,10 +4,19 @@ package com.example.traintracker;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -16,6 +25,7 @@ import android.widget.TextView;
 public class ViewExpectedTimes extends Fragment {
 
     private TextView textView;
+    String server_url = "http://eca2f37e.ngrok.io/trains/expectedArrivalTimes";
 
     public ViewExpectedTimes() {
         // Required empty public constructor
@@ -26,9 +36,34 @@ public class ViewExpectedTimes extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_expected_times,container,false);
+
         textView = view .findViewById(R.id.text_view);
-        //String m = getArguments().getString("message");
-        textView.setText("Times");
+
+
+        //make request to get current location of the train
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, server_url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            textView.setText(response.getString("message"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Creation", error.toString());
+                        error.printStackTrace();
+                    }
+                });
+        MySingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+        //
+
         return view;
     }
 
