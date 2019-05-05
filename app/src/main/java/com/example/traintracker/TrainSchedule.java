@@ -28,7 +28,7 @@ import java.util.HashMap;
 
 public class TrainSchedule extends AppCompatActivity {
 
-    String server_url= "http://eca2f37e.ngrok.io/trains/trainSchedule";
+    String server_url= getString(R.string.serverURL);
     EditText fromStation;
     EditText toStation;
     TextView date;

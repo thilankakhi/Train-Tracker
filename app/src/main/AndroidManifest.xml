@@ -35,6 +35,11 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAyKF-HG17K9PNqUveRKsY4d55_mfjDzh4" />
+
+        <service
+            android:name=".ShareLocationService"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

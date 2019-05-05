@@ -31,12 +31,18 @@ public class MainActivity extends AppCompatActivity {
     EditText email;
     EditText password;
     TextView errorMessage;
-    String server_url= "http://eca2f37e.ngrok.io/users/login";
+    //Resources resources = getResources();
+    android.content.res.Resources res;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        res = getResources();
+        String server_url= res.getString(R.string.serverURL);
+        final String endpoint_url= server_url+"/users/login";
 
         signin = findViewById(R.id.signin);
         signup = findViewById(R.id.signup);
@@ -64,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                     params.put("password", Password);
 
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                            (Request.Method.POST, server_url, new JSONObject(params), new Response.Listener<JSONObject>() {
+                            (Request.Method.POST, endpoint_url, new JSONObject(params), new Response.Listener<JSONObject>() {
 
                                 @Override
                                 public void onResponse(JSONObject response) {

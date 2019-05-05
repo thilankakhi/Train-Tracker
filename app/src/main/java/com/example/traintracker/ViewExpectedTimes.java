@@ -25,7 +25,8 @@ import org.json.JSONObject;
 public class ViewExpectedTimes extends Fragment {
 
     private TextView textView;
-    String server_url = "http://eca2f37e.ngrok.io/trains/expectedArrivalTimes";
+    String server_url= getString(R.string.serverURL);
+    String endpoint_url= server_url+"/trains/expectedArrivalTimes";
 
     public ViewExpectedTimes() {
         // Required empty public constructor
@@ -42,7 +43,7 @@ public class ViewExpectedTimes extends Fragment {
 
         //make request to get current location of the train
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.POST, server_url, null, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, endpoint_url, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {

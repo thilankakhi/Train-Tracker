@@ -18,4 +18,5 @@
     <string name="viewTrainSchedule">View Schedule</string>
     <string name="currentLocation">Current Location</string>
     <string name="expectedTimes">Expected Times</string>
+    <string name="serverURL">http://5f30394c.ngrok.io</string>
 </resources>
