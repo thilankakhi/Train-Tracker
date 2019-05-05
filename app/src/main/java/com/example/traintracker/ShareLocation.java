@@ -42,10 +42,17 @@ public class ShareLocation extends AppCompatActivity {
         });
     }
 
-    public void shareLocation(View view) {
+    public void startShareLocation(View view) {
        // Log.d("isu","in share Location");
         Intent intent = new Intent(this,ShareLocationService.class);
         intent.putExtra("SleepTime",15);
         startService(intent);
+    }
+
+    public void stopShareLocation(View view) {
+        // Log.d("isu","in share Location");
+        /*Intent intent = new Intent(this,ShareLocationService.class);
+        intent.putExtra("SleepTime",15);
+        startService(intent);*/
     }
 }

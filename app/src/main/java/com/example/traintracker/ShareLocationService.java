@@ -32,6 +32,7 @@ public class ShareLocationService extends IntentService implements LocationListe
     boolean isGPSEnabled = false;
     boolean isNetworkEnabled = false;
     boolean isGPSTrackingEnabled = false;
+    boolean isRunning = false;
     private String provider_info;
 
     public ShareLocationService() {
@@ -41,23 +42,20 @@ public class ShareLocationService extends IntentService implements LocationListe
     @Override
     protected void onHandleIntent(Intent workIntent) {
 
-        String dataString = workIntent.getDataString();
-        int sleepTime = workIntent.getIntExtra("SleepTime", -1);
-        int c = 1;
-        while (c <= sleepTime) {
+        isRunning = true;
+        while (isRunning) {
             try {
                 getLocation();
                 Thread.sleep(1000);
-                makeRequest(c);
+                makeRequest();
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            c++;
         }
     }
 
-    protected void makeRequest(int c) {
+    protected void makeRequest() {
 
         res = getResources();
         String server_url = res.getString(R.string.serverURL);
