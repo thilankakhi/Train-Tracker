@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,8 +20,9 @@ public class ShareLocation extends AppCompatActivity {
 
     private ImageView sback;
     private TextView bt;
-    private  TextView test;
+    private EditText train;
     LocationManager locationManager;
+    String travelingTrain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,8 @@ public class ShareLocation extends AppCompatActivity {
 
         sback = findViewById(R.id.sback);
         bt = findViewById(R.id.share);
-        test = findViewById(R.id.coordinates);
+        train = findViewById(R.id.travelingTrain);
+        travelingTrain = train.getText().toString();
 
         sback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,16 +46,12 @@ public class ShareLocation extends AppCompatActivity {
     }
 
     public void startShareLocation(View view) {
-       // Log.d("isu","in share Location");
-        Intent intent = new Intent(this,ShareLocationService.class);
-        intent.putExtra("SleepTime",15);
-        startService(intent);
+       Intent intent = new Intent(this,ShareLocationService.class);
+       intent.putExtra("Traveling Train",travelingTrain);
+       startService(intent);
     }
 
     public void stopShareLocation(View view) {
-        // Log.d("isu","in share Location");
-        /*Intent intent = new Intent(this,ShareLocationService.class);
-        intent.putExtra("SleepTime",15);
-        startService(intent);*/
+        ShareLocationService.stopService();
     }
 }

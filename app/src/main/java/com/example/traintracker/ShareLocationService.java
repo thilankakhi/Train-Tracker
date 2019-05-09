@@ -32,8 +32,9 @@ public class ShareLocationService extends IntentService implements LocationListe
     boolean isGPSEnabled = false;
     boolean isNetworkEnabled = false;
     boolean isGPSTrackingEnabled = false;
-    boolean isRunning = false;
+    private static boolean  isRunning;
     private String provider_info;
+    String travelingTrain;
 
     public ShareLocationService() {
         super("MyBackgroundThread");
@@ -41,21 +42,22 @@ public class ShareLocationService extends IntentService implements LocationListe
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
-
         isRunning = true;
+        travelingTrain = workIntent.getStringExtra("Traveling Train");
         while (isRunning) {
             try {
                 getLocation();
                 Thread.sleep(1000);
-                makeRequest();
+                makeRequest(travelingTrain);
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        stopUsingGPS();
     }
 
-    protected void makeRequest() {
+    protected void makeRequest(String train) {
 
         res = getResources();
         String server_url = res.getString(R.string.serverURL);
@@ -69,7 +71,8 @@ public class ShareLocationService extends IntentService implements LocationListe
 
         HashMap<String, String> params = new HashMap<>();
         params.put("latitude", lat);
-        params.put("longtide", lon);
+        params.put("longitude", lon);
+        params.put("Train", train);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.POST, endpoint_url, new JSONObject(params), new Response.Listener<JSONObject>() {
@@ -161,7 +164,10 @@ public class ShareLocationService extends IntentService implements LocationListe
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
 
+    static void stopService() {
+        isRunning = false;
     }
 
     public boolean getIsGPSTrackingEnabled() {
@@ -173,7 +179,6 @@ public class ShareLocationService extends IntentService implements LocationListe
             locationManager.removeUpdates(ShareLocationService.this);
         }
     }
-
 
     @Override
     public void onLocationChanged(Location location) {
