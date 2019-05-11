@@ -33,6 +33,7 @@ public class ShareLocationService extends IntentService implements LocationListe
     Location location;
     double latitude;
     double longitude;
+    boolean isLocationChanged;
 
     boolean isGPSEnabled = false;
     boolean isNetworkEnabled = false;
@@ -48,7 +49,7 @@ public class ShareLocationService extends IntentService implements LocationListe
 
     {
         try {
-            mSocket = IO.socket("http://60ff4fa1.ngrok.io/trains/pullLocation/update");
+            mSocket = IO.socket("http://60ff4fa1.ngrok.io/trains/pullLocation");
         } catch (URISyntaxException e) {
             Log.d("myTag", e.getMessage());
         }
@@ -87,21 +88,39 @@ public class ShareLocationService extends IntentService implements LocationListe
     protected void onHandleIntent(Intent workIntent) {
 
         isRunning = true;
+        //isLocationChanged = false;
         travelingTrain = workIntent.getStringExtra("Traveling Train");
 
         while (isRunning) {
-            getLocation();
-            String lat = Double.toString(latitude);
-            String lon = Double.toString(longitude);
-            String jsonString = "{latitude: " + lat + ", longitude: " + lon + ", train: " + travelingTrain + "}";
+            Log.d("isu", "helooooo");
             try {
-                Thread.sleep(1000);
-                JSONObject jsonData = new JSONObject(jsonString);
-                mSocket.emit("update", jsonData);
-            } catch (JSONException e) {
-                Log.d("me", "error send message " + e.getMessage());
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+            if(isLocationChanged) {
+                Log.d("isu", "hureyyyyyy");
+                getLocation();
+                String lat = Double.toString(latitude);
+                String lon = Double.toString(longitude);
+                String jsonString = "{latitude: " + lat + ", longitude: " + lon + ", train: " + travelingTrain + "}";
+                try {
+                    Thread.sleep(500);
+                    JSONObject jsonData = new JSONObject(jsonString);
+                    mSocket.emit("update", jsonData);
+                } catch (JSONException e) {
+                    Log.d("me", "error send message " + e.getMessage());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                try {
+                    Thread.sleep(1000);
+                    isLocationChanged = false;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
         }
@@ -244,6 +263,8 @@ public class ShareLocationService extends IntentService implements LocationListe
 
     @Override
     public void onLocationChanged(Location location) {
+        isLocationChanged = true;
+        Log.i("change", "location changedddddd");
     }
 
     @Override

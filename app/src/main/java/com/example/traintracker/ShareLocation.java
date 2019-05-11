@@ -32,7 +32,7 @@ public class ShareLocation extends AppCompatActivity {
         sback = findViewById(R.id.sback);
         bt = findViewById(R.id.share);
         train = findViewById(R.id.travelingTrain);
-        travelingTrain = train.getText().toString();
+
 
         sback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +46,7 @@ public class ShareLocation extends AppCompatActivity {
     }
 
     public void startShareLocation(View view) {
+        travelingTrain = train.getText().toString();
        Intent intent = new Intent(this,ShareLocationService.class);
        intent.putExtra("Traveling Train",travelingTrain);
        startService(intent);
