@@ -16,9 +16,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URISyntaxException;
 import java.util.HashMap;
 
 public class ShareLocationService extends IntentService implements LocationListener {
@@ -35,29 +40,86 @@ public class ShareLocationService extends IntentService implements LocationListe
     private static boolean  isRunning;
     private String provider_info;
     String travelingTrain;
+    private Emitter.Listener onNewMessage;
+
+    //String server_url= res.getString(R.string.serverURL);
+
+    private Socket mSocket;
+
+    {
+        try {
+            mSocket = IO.socket("http://60ff4fa1.ngrok.io/trains/pullLocation/update");
+        } catch (URISyntaxException e) {
+            Log.d("myTag", e.getMessage());
+        }
+    }
 
     public ShareLocationService() {
         super("MyBackgroundThread");
+
+        onNewMessage = new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                MainActivity.getInstent().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        JSONObject data = (JSONObject) args[0];
+                        String username;
+                        String message;
+                        try {
+                            username = data.getString("username");
+                            message = data.getString("message");
+                        } catch (JSONException e) {
+                            return;
+                        }
+
+                        // add the message to view
+                        //addMessage(username, message);
+                    }
+                });
+            }
+        };
+
+        mSocket.connect();
     }
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
+
         isRunning = true;
         travelingTrain = workIntent.getStringExtra("Traveling Train");
+
         while (isRunning) {
+            getLocation();
+            String lat = Double.toString(latitude);
+            String lon = Double.toString(longitude);
+            String jsonString = "{latitude: " + lat + ", longitude: " + lon + ", train: " + travelingTrain + "}";
+            try {
+                Thread.sleep(1000);
+                JSONObject jsonData = new JSONObject(jsonString);
+                mSocket.emit("update", jsonData);
+            } catch (JSONException e) {
+                Log.d("me", "error send message " + e.getMessage());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        /*while (isRunning) {
             try {
                 getLocation();
                 Thread.sleep(1000);
-                makeRequest(travelingTrain);
+                //makeRequest(travelingTrain);
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
         stopUsingGPS();
     }
 
-    protected void makeRequest(String train) {
+    /*protected void makeRequest(String train) {
 
         res = getResources();
         String server_url = res.getString(R.string.serverURL);
@@ -100,7 +162,7 @@ public class ShareLocationService extends IntentService implements LocationListe
                 });
         MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
 
-    }
+    }*/
 
     void getLocation() {
 

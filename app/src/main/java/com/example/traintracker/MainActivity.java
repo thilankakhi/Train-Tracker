@@ -33,16 +33,18 @@ public class MainActivity extends AppCompatActivity {
     TextView errorMessage;
     //Resources resources = getResources();
     android.content.res.Resources res;
+    static MainActivity instant;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        instant =this;
 
         res = getResources();
         String server_url= res.getString(R.string.serverURL);
-        final String endpoint_url= server_url+"/users/login";
+        final String endpoint_url= server_url+"/users/SignIn";
 
         signin = findViewById(R.id.signin);
         signup = findViewById(R.id.signup);
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     try {
-                                        if (response.getString("message").equals("pass")){
+                                        if (response.getString("message").equals("auth successful")){
                                             Intent it = new Intent(MainActivity.this, MainMenu.class);
                                             startActivity(it);
                                         }
@@ -107,5 +109,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(it);
             }
         });
+    }
+
+    public static MainActivity getInstent(){
+        return instant;
     }
 }
