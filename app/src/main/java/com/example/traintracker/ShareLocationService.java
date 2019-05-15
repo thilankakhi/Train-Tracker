@@ -49,7 +49,7 @@ public class ShareLocationService extends IntentService implements LocationListe
 
     {
         try {
-            mSocket = IO.socket("http://60ff4fa1.ngrok.io/trains/pullLocation");
+            mSocket = IO.socket("http://60ff4fa1.ngrok.io");
         } catch (URISyntaxException e) {
             Log.d("myTag", e.getMessage());
         }
@@ -92,35 +92,17 @@ public class ShareLocationService extends IntentService implements LocationListe
         travelingTrain = workIntent.getStringExtra("Traveling Train");
 
         while (isRunning) {
-            Log.d("isu", "helooooo");
+            getLocation();
+            String lat = Double.toString(latitude);
+            String lon = Double.toString(longitude);
+            String jsonString = "{latitude: " + lat + ", longitude: " + lon + ", train:  }";
+
             try {
                 Thread.sleep(2000);
+                //JSONObject jsonData = new JSONObject(jsonString);
+                mSocket.emit("new message", "hello");
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-            if(isLocationChanged) {
-                Log.d("isu", "hureyyyyyy");
-                getLocation();
-                String lat = Double.toString(latitude);
-                String lon = Double.toString(longitude);
-                String jsonString = "{latitude: " + lat + ", longitude: " + lon + ", train: " + travelingTrain + "}";
-                try {
-                    Thread.sleep(500);
-                    JSONObject jsonData = new JSONObject(jsonString);
-                    mSocket.emit("update", jsonData);
-                } catch (JSONException e) {
-                    Log.d("me", "error send message " + e.getMessage());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            else{
-                try {
-                    Thread.sleep(1000);
-                    isLocationChanged = false;
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
 
         }
@@ -245,6 +227,8 @@ public class ShareLocationService extends IntentService implements LocationListe
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mSocket.disconnect();
+        mSocket.off("new message", onNewMessage);
     }
 
     static void stopService() {

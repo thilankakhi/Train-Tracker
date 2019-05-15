@@ -25,8 +25,9 @@ import org.json.JSONObject;
 public class ViewExpectedTimes extends Fragment {
 
     private TextView textView;
-    String server_url= getString(R.string.serverURL);
-    String endpoint_url= server_url+"/trains/expectedArrivalTimes";
+    //String server_url= getString(R.string.serverURL);
+    //String endpoint_url= server_url+"/trains/expectedArrivalTimes";
+    String endpoint_url= "/trains/expectedArrivalTimes";
 
     public ViewExpectedTimes() {
         // Required empty public constructor

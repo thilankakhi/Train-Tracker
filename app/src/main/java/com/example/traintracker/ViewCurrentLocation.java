@@ -33,8 +33,9 @@ public class ViewCurrentLocation extends Fragment implements OnMapReadyCallback{
     GoogleMap mgoogleMap;
     MapView mapView;
     View view;
-    String server_url= getString(R.string.serverURL);
-    String endpoint_url= server_url+"/trains/currentLocation";
+    //String server_url= getString(R.string.serverURL);
+    //String endpoint_url= server_url+"/trains/currentLocation";
+    String endpoint_url= "/trains/currentLocation";
     Double latitude, longtitue;
 
     public ViewCurrentLocation() {

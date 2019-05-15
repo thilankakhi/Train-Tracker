@@ -18,5 +18,12 @@
     <string name="viewTrainSchedule">View Schedule</string>
     <string name="currentLocation">Current Location</string>
     <string name="expectedTimes">Expected Times</string>
-    <string name="serverURL">http://60ff4fa1.ngrok.io</string>
+    <string name="serverURL">http://c3f6a952.ngrok.io</string>
+
+    <string-array name="stations">
+        <item>Colombo</item>
+        <item>Galle</item>
+        <item>Kandy</item>
+        <item>Polgaswela</item>
+    </string-array>
 </resources>

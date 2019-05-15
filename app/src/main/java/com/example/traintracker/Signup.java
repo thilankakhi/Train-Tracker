@@ -68,14 +68,23 @@ public class Signup extends AppCompatActivity {
                 java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
                 java.util.regex.Matcher m = p.matcher(Email);
 
-                if (UserName.isEmpty() | Email.isEmpty() | Password.isEmpty() | PasswordR.isEmpty()){
-                    errorMessage.setText("Please fill every field");
+                if (UserName.isEmpty()){
+                    userName.setError("Field cannot be left blank");
+                }
+                if (Email.isEmpty()){
+                    email.setError("Field cannot be left blank");
+                }
+                if (Password.isEmpty()){
+                    password.setError("Field cannot be left blank");
+                }
+                if (PasswordR.isEmpty()){
+                    passwordR.setError("Field cannot be left blank");
                 }
                 else if(!m.matches()){
-                    errorMessage.setText("Email address is not valid");
+                    email.setError("Email address is not valid");
                 }
                 else if(!Password.equals(PasswordR)){
-                    errorMessage.setText("Passwords are does not match");
+                    passwordR.setError("Passwords are does not match");
                 }
                 else{
                     HashMap<String, String> params = new HashMap<String, String>();

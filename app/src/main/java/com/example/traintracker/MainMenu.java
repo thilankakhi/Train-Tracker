@@ -9,7 +9,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONObject;
 
 
 public class MainMenu extends AppCompatActivity {
@@ -24,6 +33,7 @@ public class MainMenu extends AppCompatActivity {
     ImageView share;
     TextView errorMessage;
     EditText train;
+    Request  jsonObjectRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +60,8 @@ public class MainMenu extends AppCompatActivity {
                 final String selectedTrain;
                 selectedTrain = train.getText().toString();
 
-                if(selectedTrain.isEmpty()) {
-                    errorMessage.setText("Select Train");
+                if(selectedTrain.isEmpty()){
+                    train.setError("Field cannot be left blank");
                 }else {
                     openViewCurrentLocation();
                 }
@@ -63,8 +73,9 @@ public class MainMenu extends AppCompatActivity {
             public void onClick(View v) {
                 final String selectedTrain;
                 selectedTrain = train.getText().toString();
-                if(selectedTrain.isEmpty()) {
-                    errorMessage.setText("Select Train");
+
+                if(selectedTrain.isEmpty()){
+                    train.setError("Field cannot be left blank");
                 }else {
                     openViewExpectedTimes();
                 }

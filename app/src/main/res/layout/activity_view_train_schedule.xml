@@ -59,7 +59,7 @@
             android:layout_marginBottom="140dp"
             android:orientation="vertical">
 
-            <customfonts.MyEditText
+            <AutoCompleteTextView
                 android:id="@+id/from_station"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,9 +68,10 @@
                 android:background="#0000"
                 android:inputType="text"
                 android:padding="16dp"
-                android:text="Colombo"
+                android:text="COLOMBO FORT"
                 android:textColor="#ADCCE2"
                 android:textColorHint="#ADCCE2"
+                android:completionThreshold="1"
                 android:textSize="16dp" />
 
             <View
@@ -80,7 +81,7 @@
                 android:layout_marginRight="40dp"
                 android:background="#ADCCE2" />
 
-            <customfonts.MyEditText
+            <AutoCompleteTextView
                 android:id="@+id/to_station"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,7 +90,7 @@
                 android:background="#0000"
                 android:inputType="text"
                 android:padding="16dp"
-                android:text="Matara"
+                android:text="MATARA"
                 android:textColor="#ADCCE2"
                 android:textColorHint="#ADCCE2"
                 android:textSize="16dp" />
@@ -176,7 +177,8 @@
                 android:padding="16dp"
                 android:text="@string/viewTrainSchedule"
                 android:textColor="#fff"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:onClick="openTrainSchedule"/>
 
 
         </LinearLayout>
