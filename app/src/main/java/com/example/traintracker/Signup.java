@@ -1,17 +1,25 @@
 package com.example.traintracker;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,12 +37,14 @@ public class Signup extends AppCompatActivity {
     private TextView errorMessage;
     android.content.res.Resources res;
     private String endpoint_url;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        mAuth = FirebaseAuth.getInstance();
         sback = findViewById(R.id.sback);
         create = findViewById(R.id.create);
         userName = findViewById(R.id.username);
@@ -87,41 +97,30 @@ public class Signup extends AppCompatActivity {
                     passwordR.setError("Passwords are does not match");
                 }
                 else{
-                    HashMap<String, String> params = new HashMap<String, String>();
-                    params.put("name", UserName);
-                    params.put("email", Email);
-                    params.put("password", Password);
-
-                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                            (Request.Method.POST, endpoint_url, new JSONObject(params), new Response.Listener<JSONObject>() {
-
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    try {
-                                        if (response.getString("message").equals("User created successfully")){
-                                            Intent it = new Intent(Signup.this, MainMenu.class);
-                                            startActivity(it);
-                                        }
-                                        else{
-                                            errorMessage.setText(response.getString("message"));
-                                        }
-                                    } catch (JSONException e) {
-                                        errorMessage.setText(e.toString());
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    errorMessage.setText(error.toString());
-                                    error.printStackTrace();
-                                }
-                            });
-                    MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+                    mAuth.createUserWithEmailAndPassword(Email, Password)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                Log.d("firebase", "createUserWithEmail:success");
+                                Toast.makeText(Signup.this,"Auth successful",Toast.LENGTH_LONG).show();
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                updateUI(user);
+                            }else{
+                                Log.d("firebase","createUserWithEmail:faliure");
+                                Toast.makeText(Signup.this,"Auth failed",Toast.LENGTH_LONG).show();
+                                updateUI(null);
+                            }
+                        }
+                    });
                 }
 
             }
         });
+    }
+
+    private void updateUI(FirebaseUser user) {
+        if(user==null){ return;}
+        startActivity(new Intent(this,MainMenu.class));
     }
 }

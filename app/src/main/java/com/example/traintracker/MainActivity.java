@@ -133,58 +133,17 @@ public class MainActivity extends AppCompatActivity {
                             // ...
                         }
                     });
-            /*HashMap<String, String> params = new HashMap<String, String>();
-            params.put("email", Email);
-            params.put("password", Password);
-            params.put("strategy", "local");
-
-            jsonObjectRequest = new JsonObjectRequest
-                    (Request.Method.POST, endpoint_url, new JSONObject(params), new Response.Listener<JSONObject>() {
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-
-                            Intent it = new Intent(MainActivity.this, MainMenu.class);
-                            startActivity(it);
-                        }
-                    }, new Response.ErrorListener() {
-
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            //errorMessage.setText(error.toString());
-                            //error.printStackTrace();
-                            String m;
-                            if(null == error.networkResponse){
-                                m="No internet connection!";
-                            }
-                            else {
-                                m="Invalid entry!";
-                            }
-                            Toast.makeText(getApplicationContext(),m,Toast.LENGTH_LONG).show();
-                            pb.setVisibility(ProgressBar.INVISIBLE);
-                            //pb.setVisibility(ProgressBar.INVISIBLE);
-                            Snackbar snackbar = Snackbar
-                                    .make(coordinatorLayout, m, Snackbar.LENGTH_LONG)
-                                    .setAction("RETRY", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            signIn(view);
-                                        }
-                                    });
-
-                            // Changing message text color
-                            snackbar.setActionTextColor(Color.RED);
-
-                            // Changing action button text color
-                            View sbView = snackbar.getView();
-                            TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
-                            textView.setTextColor(Color.YELLOW);
-
-                            snackbar.show();
-                        }
-                    });
-            MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
-            */
+            pb.setVisibility(ProgressBar.INVISIBLE);
         }
+    }
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+    }
+
+    private void updateUI(FirebaseUser currentUser) {
+
     }
 }

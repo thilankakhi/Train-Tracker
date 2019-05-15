@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "854193050663",
+    "firebase_url": "https://train-tracker-240709.firebaseio.com",
+    "project_id": "train-tracker-240709",
+    "storage_bucket": "train-tracker-240709.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854193050663:android:22df0799938ee250",
+        "android_client_info": {
+          "package_name": "com.example.traintracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854193050663-p7eitknb20mpm9vo1gp8sc29uu8nifo0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOEr6dPHgXhCzs8UxKJTbJ-vZbh8RkKa0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "854193050663-p7eitknb20mpm9vo1gp8sc29uu8nifo0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
