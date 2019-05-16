@@ -28,6 +28,8 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONException;
@@ -37,7 +39,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ShareLocationService extends IntentService implements LocationListener {
+public class TestService extends IntentService implements LocationListener {
 
     LocationManager locationManager;
     android.content.res.Resources res;
@@ -57,31 +59,40 @@ public class ShareLocationService extends IntentService implements LocationListe
 
     //String server_url= res.getString(R.string.serverURL);
 
-    public ShareLocationService() {
+    public TestService() {
         super("MyBackgroundThread");
 
     }
-
     @Override
     protected void onHandleIntent(Intent workIntent) {
 
-        Log.e("server", "at onHandleIntent");
-
         travelingTrain = workIntent.getStringExtra("Traveling Train");
 
-        isRunning = true;
+        LocationRequest request = new LocationRequest();
+        request.setInterval(10000);
+        request.setFastestInterval(5000);
+        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-        while (isRunning) {
-            try {
-                getLocation();
-                Thread.sleep(1000);
-                makeRequest(travelingTrain);
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
+        FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(this);
+        //final String path = getString(R.string.firebase_path) + "/" + getString(R.string.transport_id);
+        int permission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        if (permission == PackageManager.PERMISSION_GRANTED) {
+            // Request location updates and when an update is
+            // received, store the location in Firebase
+            client.requestLocationUpdates(request, new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("trains");
+                    Location location = locationResult.getLastLocation();
+                    if (location != null) {
+                        Log.d("service", "location update " + location);
+                        ref.setValue(location);
+                    }
+                }
+            }, null);
         }
-        stopUsingGPS();
     }
 
     protected void makeRequest(String train) {
@@ -203,7 +214,7 @@ public class ShareLocationService extends IntentService implements LocationListe
     }
     public void stopUsingGPS() {
         if (locationManager != null) {
-            locationManager.removeUpdates(ShareLocationService.this);
+            locationManager.removeUpdates(TestService.this);
         }
     }
 
@@ -230,3 +241,7 @@ public class ShareLocationService extends IntentService implements LocationListe
         return null;
     }
 }
+
+
+
+

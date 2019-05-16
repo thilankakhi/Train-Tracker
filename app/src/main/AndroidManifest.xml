@@ -40,6 +40,10 @@
             android:name=".ShareLocationService"
             android:exported="false"/>
 
+        <service
+            android:name=".TestService"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

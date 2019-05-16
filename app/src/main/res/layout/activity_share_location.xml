@@ -48,6 +48,7 @@
                 android:layout_marginRight="35dp"
                 android:background="#0000"
                 android:hint="Traveling Train"
+                android:text="123"
                 android:inputType="text"
                 android:padding="16dp"
                 android:textColor="#ADCCE2"

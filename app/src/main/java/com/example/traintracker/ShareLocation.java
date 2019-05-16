@@ -45,11 +45,12 @@ public class ShareLocation extends AppCompatActivity {
         });
     }
 
-    public void startShareLocation(View view) {
+    public void startShareLocation(View view){
         travelingTrain = train.getText().toString();
-       Intent intent = new Intent(this,ShareLocationService.class);
-       intent.putExtra("Traveling Train",travelingTrain);
-       startService(intent);
+        Log.e("service", "mala wadeeee at share");
+        Intent intent = new Intent(this,TestService.class);
+        intent.putExtra("Traveling Train",travelingTrain);
+        startService(intent);
     }
 
     public void stopShareLocation(View view) {

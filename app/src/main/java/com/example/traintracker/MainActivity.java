@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         String server_url= res.getString(R.string.serverURL);
         endpoint_url= server_url+"/authentication/";
 
-        //FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
         signin = findViewById(R.id.signin);
