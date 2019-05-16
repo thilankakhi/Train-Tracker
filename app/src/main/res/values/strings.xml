@@ -19,6 +19,11 @@
     <string name="currentLocation">Current Location</string>
     <string name="expectedTimes">Expected Times</string>
     <string name="serverURL">http://c3f6a952.ngrok.io</string>
+    <string name="notification_text">Tracking, tap to cancel</string>
+    <string name="transport_id" translatable="false">123</string>
+    <string name="firebase_path" translatable="false">locations</string>
+    <string name="firebase_email" translatable="false">harith.sankalpa.16@cse.mrt.ac.lk</string>
+    <string name="firebase_password" translatable="false">Hsarith67</string>
 
     <string-array name="stations">
         <item>Colombo</item>

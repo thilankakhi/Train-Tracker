@@ -53,13 +53,12 @@ public class ShareLocationService extends IntentService implements LocationListe
     private String provider_info;
     String travelingTrain;
     private Emitter.Listener onNewMessage;
-    FirebaseFirestore db;
+    String dbPath;
 
     //String server_url= res.getString(R.string.serverURL);
 
     public ShareLocationService() {
         super("MyBackgroundThread");
-
     }
 
     @Override
