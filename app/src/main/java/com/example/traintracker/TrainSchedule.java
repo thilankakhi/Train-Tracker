@@ -1,11 +1,16 @@
 package com.example.traintracker;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -34,6 +39,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TrainSchedule extends AppCompatActivity {
@@ -44,10 +50,18 @@ public class TrainSchedule extends AppCompatActivity {
     TableLayout table;
     Context ct;
 
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private List<ListItem> listItems;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train_schedule);
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading data...");
+        progressDialog.show();
 
         ct=this;
 
@@ -57,7 +71,16 @@ public class TrainSchedule extends AppCompatActivity {
         endTime = getIntent().getStringExtra("endTime");
         startTime = getIntent().getStringExtra("startTime");
 
-        table = findViewById(R.id.table);
+        recyclerView = findViewById(R.id.my_recycler_view);
+        DividerItemDecoration divider = new
+                DividerItemDecoration(recyclerView.getContext(),
+                DividerItemDecoration.VERTICAL);
+        divider.setDrawable(
+                ContextCompat.getDrawable(getBaseContext(), R.drawable.divider)
+        );
+        recyclerView.addItemDecoration(divider);
+        recyclerView.setHasFixedSize(true);
+        listItems = new ArrayList<>();
 
         //Log.e("details ", fromStation +","+toStation+","+date+","+startTime+","+endTime);
 
@@ -105,6 +128,7 @@ public class TrainSchedule extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        progressDialog.dismiss();
                         try {
                             Log.e("Response trainID:", response.getJSONObject("RESULTS").getJSONObject("directTrains").getJSONArray("trainsList").toString());
                             Toast.makeText(getApplicationContext(),response.getString("MESSAGE"),Toast.LENGTH_LONG).show();
@@ -115,31 +139,17 @@ public class TrainSchedule extends AppCompatActivity {
                                     TableRow row=new TableRow(ct);
                                     TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
                                     row.setLayoutParams(lp);
-                                    String trainID = Integer.toString(trainList.getJSONObject(i).getInt("trainID"))+"\n"+trainList.getJSONObject(i).getString("trainName");
-                                    String arrivalTime = trainList.getJSONObject(i).getString("arrivalTime");
+                                    String train = Integer.toString(trainList.getJSONObject(i).getInt("trainID"))+" "+trainList.getJSONObject(i).getString("trainName");
+                                    String arrival = "In "+fromStation +" at "+trainList.getJSONObject(i).getString("arrivalTime");
                                     String depatureTime = trainList.getJSONObject(i).getString("depatureTime");
-                                    String arrivalTimeEndStation = trainList.getJSONObject(i).getString("arrivalTimeEndStation");
+                                    String departure = "Out "+ toStation+" at "+ trainList.getJSONObject(i).getString("arrivalTimeEndStation");
                                     String trainType = trainList.getJSONObject(i).getString("trainType");
-                                    Log.e("results:", trainID+", "+arrivalTime+", "+depatureTime+", "+arrivalTimeEndStation+", "+trainType);
-                                    TextView tv1=new TextView(ct);
-                                    tv1.setTextSize(12);
-                                    tv1.setText(trainID);
-                                    TextView tv2=new TextView(ct);
-                                    tv2.setText(arrivalTime);
-                                    TextView tv3=new TextView(ct);
-                                    tv3.setText(depatureTime);
-                                    TextView tv4=new TextView(ct);
-                                    tv4.setText(arrivalTimeEndStation);
-                                    TextView tv5=new TextView(ct);
-                                    tv4.setText(trainType);
-                                    row.addView(tv1);
-                                    row.addView(tv2);
-                                    row.addView(tv3);
-                                    row.addView(tv4);
-                                    row.addView(tv5);
-                                    registerForContextMenu(row);
-                                    table.addView(row);
+                                    ListItem item = new ListItem(train, arrival, departure,trainType);
+                                    listItems.add(item);
                                 }
+                                adapter = new ResultAdapter(listItems, ct);
+                                recyclerView.setLayoutManager(new LinearLayoutManager(ct));
+                                recyclerView.setAdapter(adapter);
                             }
 
 
@@ -148,11 +158,13 @@ public class TrainSchedule extends AppCompatActivity {
                         }
                     }
                 }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Error: ", error.toString());
-            }
-        }){
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            progressDialog.dismiss();
+                            Log.e("Error: ", error.toString());
+                            Toast.makeText(getApplicationContext(),error.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                }){
             @Override
             public String getBodyContentType() {
                 return "application/json; charset=utf-8";
