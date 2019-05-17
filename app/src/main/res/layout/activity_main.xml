@@ -36,7 +36,6 @@
                 android:hint="Email"
                 android:inputType="text"
                 android:padding="16dp"
-                android:text="example@example.com"
                 android:textColor="#ADCCE2"
                 android:textColorHint="#ADCCE2"
                 android:textSize="16dp" />
@@ -60,7 +59,6 @@
                 android:inputType="textPassword"
                 android:maxLength="12"
                 android:padding="16dp"
-                android:text="example"
                 android:textColor="#ADCCE2"
                 android:textColorHint="#ADCCE2"
                 android:textSize="16dp" />
