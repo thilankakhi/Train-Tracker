@@ -1,6 +1,13 @@
 package com.example.traintracker;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,21 +15,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
 
@@ -30,58 +44,24 @@ import org.json.JSONObject;
  */
 public class ViewCurrentLocation extends Fragment implements OnMapReadyCallback{
 
+    private static final String TAG = ViewCurrentLocation.class.getSimpleName();
     GoogleMap mgoogleMap;
     MapView mapView;
     View view;
-    //String server_url= getString(R.string.serverURL);
-    //String endpoint_url= server_url+"/trains/currentLocation";
-    String endpoint_url= "/trains/currentLocation";
-    Double latitude, longtitue;
+    String trainId = "123";
+    String trainStartTime="1503";
+    FirebaseFirestore db;
 
     public ViewCurrentLocation() {
         // Required empty public constructor
     }
-
-    public static ViewCurrentLocation newInstance() {
-        ViewCurrentLocation viewCurrentLocation = new ViewCurrentLocation();
-        return viewCurrentLocation;
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_view_current_location,container,false);
         mapView =  view.findViewById(R.id.map);
-
-
-        //make request to get current location of the train
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.POST, endpoint_url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            latitude = response.getDouble("latitude");
-                            longtitue =  response.getDouble("longitude");
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Creation", error.toString());
-                        error.printStackTrace();
-                    }
-                });
-        MySingleton.getInstance(getActivity().getApplicationContext()).addToRequestQueue(jsonObjectRequest);
-        //
-
-
+        db = FirebaseFirestore.getInstance();
         return view;
     }
 
@@ -103,13 +83,78 @@ public class ViewCurrentLocation extends Fragment implements OnMapReadyCallback{
         mgoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longtitue)));
-
+        checkLogin();
+/*
         LatLng redmond = new LatLng(latitude, longtitue);
 
-        mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(redmond, 3));
+        mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(redmond, 3));*/
 
 
+    }
+
+    private void checkLogin(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user==null){
+            Toast.makeText(getActivity(),"Login first",Toast.LENGTH_LONG).show();
+            getActivity().getSupportFragmentManager().popBackStack();
+        }else{
+            subcribeToLocationChanges();
+        }
+    }
+
+    private void subcribeToLocationChanges() {
+        String date = android.text.format.DateFormat.format("yyyyMMdd", new java.util.Date()).toString();
+        String path = "train_run/" + trainId + "_" + date+"_"+trainStartTime;
+        //TODO:replace hardcoded path with path
+        final DocumentReference docRef = db.document("/train_run/123_16042019_1500");
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    setMarker(snapshot);
+                } else {
+                    Toast.makeText(getActivity(),"No data available",Toast.LENGTH_LONG).show();
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+            }
+        });
+    }
+
+    private void setMarker(DocumentSnapshot snapshot) {
+        try{
+            Map<String,Object> data = (HashMap<String,Object>)snapshot.getData().get("current_location");
+            GeoPoint geoPoint = (GeoPoint) data.get("location");
+            LatLng location = new LatLng(geoPoint.getLatitude(),geoPoint.getLongitude());
+            Log.d(TAG,"pointer at ["+location.latitude+","+location.longitude+"]");
+            mgoogleMap.addMarker(new MarkerOptions().position(location).title("train").draggable(true).icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_tracker))));
+            mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 75));
+        }catch(ClassCastException e){
+            Log.d(TAG,"current_location is not a map");
+        }
+    }
+    private Bitmap getMarkerBitmapFromView(@DrawableRes int resId) {
+
+        View customMarkerView = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.view_custom_marker, null);
+        ImageView markerImageView = (ImageView) customMarkerView.findViewById(R.id.profile_image);
+        markerImageView.setImageResource(resId);
+        customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
+        customMarkerView.buildDrawingCache();
+        Bitmap returnedBitmap = Bitmap.createBitmap(customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        canvas.drawColor(Color.BLACK, PorterDuff.Mode.SRC_IN);
+        Drawable drawable = customMarkerView.getBackground();
+        if (drawable != null)
+            drawable.draw(canvas);
+        customMarkerView.draw(canvas);
+        return returnedBitmap;
     }
 
 }
