@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:id="@+id/coordinatorLayout"
@@ -34,6 +34,7 @@
                 android:background="#0000"
                 android:drawableRight="@drawable/user"
                 android:hint="Email"
+                android:text="example@example.com"
                 android:inputType="text"
                 android:padding="16dp"
                 android:textColor="#ADCCE2"
@@ -56,6 +57,7 @@
                 android:background="#0000"
                 android:drawableRight="@drawable/pasword"
                 android:hint="Password"
+                android:text="example"
                 android:inputType="textPassword"
                 android:maxLength="12"
                 android:padding="16dp"
@@ -180,4 +182,4 @@
                 android:textSize="22dp" />
         </LinearLayout>
     </RelativeLayout>
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

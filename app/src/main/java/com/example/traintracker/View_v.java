@@ -1,7 +1,9 @@
 package com.example.traintracker;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -50,6 +52,26 @@ public class View_v extends AppCompatActivity {
             }
         });
 
-    }}
+
+        String intentFragment = getIntent().getStringExtra("frgToLoad");
+        switch (intentFragment){
+            case "ViewCurrentLocation":
+                replaceFragment(new ViewCurrentLocation());
+                break;
+            case "ViewExpectedArrivalTimes":
+                replaceFragment(new ViewExpectedTimes());
+                break;
+        }
+
+    }
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.pager, fragment);
+        fragmentTransaction.addToBackStack(fragment.toString());
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.commit();
+    }
+}
 
 

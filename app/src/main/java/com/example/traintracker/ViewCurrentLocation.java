@@ -48,7 +48,7 @@ public class ViewCurrentLocation extends Fragment implements OnMapReadyCallback{
     GoogleMap mgoogleMap;
     MapView mapView;
     View view;
-    String trainId = "123";
+    String trainId = "4";
     String trainStartTime="1503";
     FirebaseFirestore db;
 
@@ -104,9 +104,10 @@ public class ViewCurrentLocation extends Fragment implements OnMapReadyCallback{
 
     private void subcribeToLocationChanges() {
         String date = android.text.format.DateFormat.format("yyyyMMdd", new java.util.Date()).toString();
-        String path = "train_run/" + trainId + "_" + date+"_"+trainStartTime;
+        //String path = "train_run/" + trainId + "_" + date+"_"+trainStartTime;
+        String path = "trains/" + trainId;
         //TODO:replace hardcoded path with path
-        final DocumentReference docRef = db.document("/train_run/123_16042019_1500");
+        final DocumentReference docRef = db.document(path);
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot,
@@ -115,9 +116,10 @@ public class ViewCurrentLocation extends Fragment implements OnMapReadyCallback{
                     Log.w(TAG, "Listen failed.", e);
                     return;
                 }
-
-                if (snapshot != null && snapshot.exists()) {
-                    setMarker(snapshot);
+                Map<String,Object> data = (HashMap<String,Object>)snapshot.getData().get("current_location");
+                if (data != null && snapshot.exists()) {
+                    Log.e("cl", snapshot.toString());
+                    setMarker(data);
                 } else {
                     Toast.makeText(getActivity(),"No data available",Toast.LENGTH_LONG).show();
                     getActivity().getSupportFragmentManager().popBackStack();
@@ -126,9 +128,9 @@ public class ViewCurrentLocation extends Fragment implements OnMapReadyCallback{
         });
     }
 
-    private void setMarker(DocumentSnapshot snapshot) {
+    private void setMarker(Map<String,Object> data) {
         try{
-            Map<String,Object> data = (HashMap<String,Object>)snapshot.getData().get("current_location");
+
             GeoPoint geoPoint = (GeoPoint) data.get("location");
             LatLng location = new LatLng(geoPoint.getLatitude(),geoPoint.getLongitude());
             Log.d(TAG,"pointer at ["+location.latitude+","+location.longitude+"]");

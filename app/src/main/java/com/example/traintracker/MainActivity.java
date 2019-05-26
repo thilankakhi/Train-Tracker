@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     //Resources resources = getResources();
     android.content.res.Resources res;
     static MainActivity instant;
-    private CoordinatorLayout coordinatorLayout;
+    private RelativeLayout coordinatorLayout;
     String endpoint_url;
     Request  jsonObjectRequest;
     ProgressBar pb;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         errorMessage = findViewById(R.id.error);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+        coordinatorLayout = findViewById(R.id
                 .coordinatorLayout);
 
         signup.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d("firebase", "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
+
+                                Log.e("user", user.getUid());
 
                                 Intent it = new Intent(MainActivity.this, MainMenu.class);
                                 startActivity(it);

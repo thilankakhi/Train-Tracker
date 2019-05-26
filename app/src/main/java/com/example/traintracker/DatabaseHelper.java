@@ -26,20 +26,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "station_table";
     public static final String COL_1 = "STATION_ID";
     public static final String COL_2 = "STATION_NAME";
+    public static int TOATAL_STATION_COUNT = 407;
     JSONArray stationList;
-    int noOfStations=0;
     Context c;
     SQLiteDatabase dbs;
+    private OnDatabaseUpdatedListener listener;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
         c = context;
+        try{
+            listener = (OnDatabaseUpdatedListener) context;
+        }catch(ClassCastException e){}
         Log.d("database","database created");
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
         Log.d("database", "table created1");
         db.execSQL("CREATE TABLE "+TABLE_NAME+" (STATION_ID INT PRIMARY KEY, STATION_NAME TEXT)");
         Log.d("database", "table created2");
@@ -56,6 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void makeRequest(SQLiteDatabase db){
 
+        Log.e("response", "making request");
         dbs = db;
 
         String end_point = "http://api.lankagate.gov.lk:8280/railway/1.0/station/getAll?lang=en";
@@ -67,12 +71,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         //Log.e("Response trainID: 2222", response.toString());
                         try {
                             stationList = response.getJSONObject("RESULTS").getJSONArray("stationList");
-                            noOfStations = response.getInt("NOFRESULTS");
+                            TOATAL_STATION_COUNT = response.getInt("NOFRESULTS");
                             Log.d("Response:", stationList.getJSONObject(0).get("stationName").toString());
-                            for(int i=0; i<=noOfStations; i++){
+                            for(int i = 0; i< TOATAL_STATION_COUNT; i++){
 
                                 try {
                                     String stationName = stationList.getJSONObject(i).get("stationName").toString();
+                                    Log.d("Response : ",stationName);
                                     int stationID = stationList.getJSONObject(i).getInt("stationID");
                                     //Log.d("stations", stationName);
                                     ContentValues contentValues = new ContentValues();
@@ -80,9 +85,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                                     contentValues.put(COL_2, stationName);
                                     dbs.insert(TABLE_NAME, null, contentValues);
                                 } catch (JSONException e) {
-                                    e.printStackTrace();
+                                    Log.d("Response:", e.getMessage());
                                 }
                             }
+                            listener.update(dbs);
                         } catch (JSONException e) {
                             Log.e("Error: 222 ", e.toString());
                             e.printStackTrace();
@@ -114,7 +120,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void insertData(SQLiteDatabase db){
 
-        for(int i=0; i<=noOfStations; i++){
+        for(int i = 0; i<= TOATAL_STATION_COUNT; i++){
 
             try {
                 String stationName = stationList.getJSONObject(i).get("stationName").toString();
@@ -148,5 +154,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_NAME, projection,null,null,null,null,null);
         return cursor;
     }
+
+    public void notifyDatabaseUpdate(){}
+
+    public interface OnDatabaseUpdatedListener{
+        void update(SQLiteDatabase db);
+    }
+
+    public int getStationCount(SQLiteDatabase database){
+        Cursor cursor = database.rawQuery("SELECT "+COL_1+" from "+TABLE_NAME,null);
+        int count  = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
+    public boolean isTableExists(String tableName,SQLiteDatabase database) {
+
+        Cursor cursor = database.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"+tableName+"'", null);
+        if(cursor!=null) {
+            if(cursor.getCount()>0) {
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+        return false;
+    }
+
+
 
 }

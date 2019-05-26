@@ -53,8 +53,6 @@ public class Signup extends AppCompatActivity {
         passwordR = findViewById(R.id.password_re_entered);
         errorMessage = findViewById(R.id.error_message);
         res = getResources();
-        String server_url= res.getString(R.string.serverURL);
-        endpoint_url= server_url+"/users/signUp";
 
         sback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +92,7 @@ public class Signup extends AppCompatActivity {
                     email.setError("Email address is not valid");
                 }
                 else if(!Password.equals(PasswordR)){
-                    passwordR.setError("Passwords are does not match");
+                    passwordR.setError("Password does not match");
                 }
                 else{
                     mAuth.createUserWithEmailAndPassword(Email, Password)

@@ -6,12 +6,14 @@ public class ListItem {
     private String arrival;
     private String departure;
     private String type;
+    private String frequency;
 
-    public ListItem(String train, String arrival, String departure, String type) {
+    public ListItem(String train, String arrival, String departure, String type, String frequency) {
         this.train = train;
         this.arrival = arrival;
         this.departure = departure;
         this.type = type;
+        this.frequency = frequency;
     }
 
     public String getTrain() {
@@ -28,5 +30,9 @@ public class ListItem {
 
     public String getType() {
         return type;
+    }
+
+    public String getFrequency() {
+        return frequency;
     }
 }
