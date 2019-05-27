@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class MainMenu extends AppCompatActivity implements DatabaseHelper.OnDatabaseUpdatedListener{
+public class MainMenu extends AppCompatActivity{
 
 
     private LinearLayout viewCurrentLocation;
@@ -84,10 +84,7 @@ public class MainMenu extends AppCompatActivity implements DatabaseHelper.OnData
 
         db = new DatabaseHelper(this);
         SQLiteDatabase database = db.getWritableDatabase();
-        if(db.isTableExists(DatabaseHelper.TABLE_NAME,database) && db.getStationCount(database)==407){
-            Log.e("res", "mainmenu");
-            updateStationList(database);
-        }
+        updateStationList(database);
         displayDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -238,13 +235,5 @@ public class MainMenu extends AppCompatActivity implements DatabaseHelper.OnData
         ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,stations);
         toStation.setAdapter(adapter2);
-        Toast.makeText(this,"Station List Loaded!",Toast.LENGTH_SHORT).show();
-    }
-
-
-
-    @Override
-    public void update(SQLiteDatabase db) {
-        updateStationList(db);
     }
 }
