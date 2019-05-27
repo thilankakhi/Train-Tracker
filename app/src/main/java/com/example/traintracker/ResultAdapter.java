@@ -1,4 +1,5 @@
 package com.example.traintracker;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,9 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         viewHolder.departure.setText(listItem.getDeparture());
         viewHolder.type.setText(listItem.getType());
         viewHolder.state.setText(listItem.getFrequency());
+        if(listItem.getRunning()){
+            viewHolder.runningBadge.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -46,6 +50,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         public TextView type;
         public TextView state;
         OnNoteListener onNoteListener;
+        public CardView runningBadge;
 
         public ViewHolder(View itemView, OnNoteListener onNoteListener) {
             super(itemView);
@@ -55,6 +60,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
             departure = itemView.findViewById(R.id.text_view_to);
             type = itemView.findViewById(R.id.text_view_type);
             state = itemView.findViewById(R.id.train_state);
+            runningBadge = itemView.findViewById(R.id.running_badge);
             this.onNoteListener = onNoteListener;
 
             itemView.setOnClickListener(this);
