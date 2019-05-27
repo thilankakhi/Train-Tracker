@@ -35,7 +35,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static String DATABASE_PATH = "/data/data/com.example.traintracker/databases/";
     public static final String DATABASE_NAME = "train.db";
     public static final String TABLE_NAME = "station_table";
-    private static final int SCHEMA_VERSION=1;
     public static final String COL_1 = "STATION_ID";
     public static final String COL_2 = "STATION_NAME";
     public static int TOATAL_STATION_COUNT = 407;
