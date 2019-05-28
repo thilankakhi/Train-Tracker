@@ -30,6 +30,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.loopj.android.http.HttpGet;
 
 import org.json.JSONArray;
@@ -59,6 +60,7 @@ public class TrainSchedule extends AppCompatActivity implements ResultAdapter.On
     private List<ListItem> listItems;
     AlertDialog.Builder window;
     String[] Options;
+    FirebaseFirestore firestoreDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class TrainSchedule extends AppCompatActivity implements ResultAdapter.On
         progressDialog.setMessage("Loading data...");
         progressDialog.show();
 
+        firestoreDB = FirebaseFirestore.getInstance();
         Options = new String[]{"Current Location", "Expected Arrival Times"};
 
 
@@ -128,7 +131,6 @@ public class TrainSchedule extends AppCompatActivity implements ResultAdapter.On
                             if(response.getJSONObject("RESULTS").getJSONObject("directTrains").getJSONArray("trainsList").length()!=0){
                                 JSONArray trainList = response.getJSONObject("RESULTS").getJSONObject("directTrains").getJSONArray("trainsList");
                                 for(int i=0; i<response.getInt("NOFRESULTS"); i++) {
-
                                     String arrivalTimeAtStartStation = trainList.getJSONObject(i).getString("arrivalTime");
                                     String arrivalTimeAtEndStation = trainList.getJSONObject(i).getString("arrivalTimeEndStation");
                                     TableRow row = new TableRow(ct);
@@ -140,7 +142,7 @@ public class TrainSchedule extends AppCompatActivity implements ResultAdapter.On
                                     String frequency = trainList.getJSONObject(i).getString("trainFrequncy");
                                     String departure = "Out " + toStation + " at " + arrivalTimeAtEndStation;
                                     String trainType = trainList.getJSONObject(i).getString("trainType");
-                                    ListItem item = new ListItem(train, arrival, departure, trainType, frequency);
+                                    ListItem item = new ListItem(train, arrival, departure, trainType, frequency,false);
                                     listItems.add(item);
                                 }
                                 test();

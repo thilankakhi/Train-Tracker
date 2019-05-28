@@ -1,5 +1,6 @@
 package com.example.traintracker;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -89,21 +90,20 @@ public class ViewTrainSchedule extends AppCompatActivity {
                 android.R.layout.simple_list_item_1,stations);
         toStation.setAdapter(adapter2);
 
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        final DatePickerDialog dialog = new DatePickerDialog(
+                ViewTrainSchedule.this,
+                dateSetListener,
+                year,month,day);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable());
+        dialog.getDatePicker().setMinDate(System.currentTimeMillis());
+
         displayDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog dialog = new DatePickerDialog(
-                        ViewTrainSchedule.this,
-                        //android.R.style.Theme_Hoio_Light_Dialog_MinWidth,
-                        dateSetListener,
-                        year,month,day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable());
-                dialog.getDatePicker().setMinDate(System.currentTimeMillis());
                 dialog.show();
             }
         });

@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.traintracker"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 28
         multiDexEnabled true
         versionCode 1
@@ -16,6 +16,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    aaptOptions {
+        noCompress "db"
     }
 }
 

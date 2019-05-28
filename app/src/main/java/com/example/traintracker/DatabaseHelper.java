@@ -2,8 +2,12 @@ package com.example.traintracker;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -17,45 +21,42 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-
+    private static String DATABASE_PATH = "/data/data/com.example.traintracker/databases/";
     public static final String DATABASE_NAME = "train.db";
     public static final String TABLE_NAME = "station_table";
     public static final String COL_1 = "STATION_ID";
     public static final String COL_2 = "STATION_NAME";
     public static int TOATAL_STATION_COUNT = 407;
     JSONArray stationList;
-    Context c;
+    Context context;
     SQLiteDatabase dbs;
-    private OnDatabaseUpdatedListener listener;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
-        c = context;
-        try{
-            listener = (OnDatabaseUpdatedListener) context;
-        }catch(ClassCastException e){}
-        Log.d("database","database created");
+        this.context = context;
+
+        DATABASE_PATH = context.getDatabasePath(DATABASE_NAME).getAbsolutePath();
+        if (!checkDataBase()) {
+            copyDataBase();
+        }
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        Log.d("database", "table created1");
-        db.execSQL("CREATE TABLE "+TABLE_NAME+" (STATION_ID INT PRIMARY KEY, STATION_NAME TEXT)");
-        Log.d("database", "table created2");
-
-        makeRequest(db);
-
-    }
+    public void onCreate(SQLiteDatabase db) {}
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME);
-        onCreate(db);
-    }
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 
     public void makeRequest(SQLiteDatabase db){
 
@@ -88,7 +89,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                                     Log.d("Response:", e.getMessage());
                                 }
                             }
-                            listener.update(dbs);
                         } catch (JSONException e) {
                             Log.e("Error: 222 ", e.toString());
                             e.printStackTrace();
@@ -114,7 +114,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
 
         };
-        MySingleton.getInstance(c.getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+        MySingleton.getInstance(context.getApplicationContext()).addToRequestQueue(jsonObjectRequest);
 
     }
 
@@ -155,12 +155,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public void notifyDatabaseUpdate(){}
-
-    public interface OnDatabaseUpdatedListener{
-        void update(SQLiteDatabase db);
-    }
-
     public int getStationCount(SQLiteDatabase database){
         Cursor cursor = database.rawQuery("SELECT "+COL_1+" from "+TABLE_NAME,null);
         int count  = cursor.getCount();
@@ -181,6 +175,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    private boolean checkDataBase() {
+        System.out.println("DATABASE_PATH : " + DATABASE_PATH);
+        File dbFile = new File(DATABASE_PATH);
+        if (dbFile.exists()) return true;
+        if (!new File(dbFile.getParent()).exists()) {
+            new File(dbFile.getParent()).mkdirs();
+        }
+        return false;
+    }
 
+    private void copyDataBase() {
+        Log.i("Database",
+                "New database is being copied to device!");
+        byte[] buffer = new byte[1024];
+        File dbDirectory = new File(new File(DATABASE_PATH).getParent());
+        File dbwal = new File(dbDirectory.getPath() + File.separator + "-wal");
+        if (dbwal.exists()) {
+            dbwal.delete();
+        }
+        File dbshm = new File(dbDirectory.getPath() + File.separator + "=shm");
+        if (dbshm.exists()) {
+            dbshm.delete();
+        }
+        //<<<<<<<<<< END OF ADDED CODE >>>>>>>>>>
 
+        OutputStream myOutput;
+        int length;
+        InputStream myInput;
+        try {
+            myInput = context.getAssets().open(DATABASE_NAME);
+            myOutput = new FileOutputStream(DATABASE_PATH);
+            while ((length = myInput.read(buffer)) > 0) {
+                myOutput.write(buffer, 0, length);
+            }
+            myOutput.close();
+            myOutput.flush();
+            myInput.close();
+            Log.i("Database",
+                    "New database has been copied to device!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
