@@ -48,7 +48,7 @@ public class ViewCurrentLocation extends Fragment implements OnMapReadyCallback{
     GoogleMap mgoogleMap;
     MapView mapView;
     View view;
-    String trainId = "4";
+    String trainId = "187";
     String trainStartTime="1503";
     FirebaseFirestore db;
 
@@ -117,6 +117,7 @@ public class ViewCurrentLocation extends Fragment implements OnMapReadyCallback{
                     return;
                 }
                 Map<String,Object> data = (HashMap<String,Object>)snapshot.getData().get("current_location");
+                //Log.e("cl", data.toString());
                 if (data != null && snapshot.exists()) {
                     Log.e("cl", snapshot.toString());
                     setMarker(data);

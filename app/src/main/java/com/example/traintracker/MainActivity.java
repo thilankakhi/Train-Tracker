@@ -50,10 +50,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         instant =this;
 
-        res = getResources();
-        String server_url= res.getString(R.string.serverURL);
-        endpoint_url= server_url+"/authentication/";
-
         mAuth = FirebaseAuth.getInstance();
 
         signin = findViewById(R.id.signin);
@@ -79,9 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     public void signIn(View view) {
-
-        //Intent it = new Intent(MainActivity.this, MainMenu.class);
-        //startActivity(it);
 
         pb = findViewById(R.id.progress_circular);
         pb.setVisibility(ProgressBar.VISIBLE);

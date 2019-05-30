@@ -29,7 +29,7 @@ public class ShareLocation extends AppCompatActivity implements View.OnClickList
     private EditText train;
     private MyTextView shareButton;
     LocationManager locationManager;
-    String travelingTrain = "123";
+    String travelingTrain = "1";
     String trainStartTime = "1503";
     private static final int PERMISSIONS_REQUEST = 1;
 
@@ -67,8 +67,9 @@ public class ShareLocation extends AppCompatActivity implements View.OnClickList
     private void startTrackerService() {
         Intent intent = new Intent(this, TrackerService.class);
         String date = android.text.format.DateFormat.format("yyyyMMdd", new java.util.Date()).toString();
-        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        String path = "train_run/" + travelingTrain + "_" + date+"_"+trainStartTime+"/locations/"+userId;
+        //String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        String userId = "1";
+        String path = "train/" + travelingTrain +"/locations/"+userId;
         Log.d("share-location","db_path : "+path);
         intent.putExtra("db_path",path);
         startService(intent);

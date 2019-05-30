@@ -240,7 +240,7 @@
                         android:layout_height="40dp"
                         android:layout_gravity="center"
                         android:paddingLeft="3dp"
-                        android:src="@drawable/ic_action_location" />
+                        android:src="@drawable/ic_history_24dp" />
                 </FrameLayout>
 
                 <customfonts.MyTextView

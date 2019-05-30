@@ -150,7 +150,14 @@ public class TrainSchedule extends AppCompatActivity implements ResultAdapter.On
 
 
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Log.d("Error: ",e.getMessage());
+                            Toast.makeText(getApplicationContext(),"Something went wrong. Please try again.",Toast.LENGTH_LONG).show();
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException e1) {
+                                e1.printStackTrace();
+                            }
+                            finish();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -159,6 +166,12 @@ public class TrainSchedule extends AppCompatActivity implements ResultAdapter.On
                             progressDialog.dismiss();
                             Log.e("Error: ", error.toString());
                             Toast.makeText(getApplicationContext(),"Something went wrong. Please try again.",Toast.LENGTH_LONG).show();
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            finish();
                         }
                 }){
             @Override
@@ -170,7 +183,7 @@ public class TrainSchedule extends AppCompatActivity implements ResultAdapter.On
             public Map<String, String> getHeaders() throws AuthFailureError {
 
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization","Bearer 7a69c7ee-1c5f-395b-9a84-f51b22537e04");
+                headers.put("Authorization","Bearer baa43fda-2f4b-3166-b5f3-a8086e03f173");
                 return headers;
             }
 
@@ -215,17 +228,17 @@ public class TrainSchedule extends AppCompatActivity implements ResultAdapter.On
 //        startActivity(intent1);
 
         window = new AlertDialog.Builder(this);
-        window.setTitle("Pick a color");
+        window.setTitle("");
         window.setItems(Options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(which == 0){
-                    Intent intent = new Intent(ct, View_v.class);
+                    Intent intent = new Intent(TrainSchedule.this, View_v.class);
                     intent.putExtra("frgToLoad", "ViewCurrentLocation");
                     startActivity(intent);
 
                 }else if(which == 1){
-                    Intent intent = new Intent(ct, View_v.class);
+                    Intent intent = new Intent(TrainSchedule.this, View_v.class);
                     intent.putExtra("frgToLoad", "ViewExpectedArrivalTimes");
                     startActivity(intent);
                 }else{
@@ -236,6 +249,11 @@ public class TrainSchedule extends AppCompatActivity implements ResultAdapter.On
         });
 
         window.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
 

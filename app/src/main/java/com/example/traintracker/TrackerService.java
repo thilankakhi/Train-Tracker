@@ -48,7 +48,7 @@ public class TrackerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        dbPath = intent.getStringExtra("db_path");
+        dbPath = intent.getStringExtra("db_path").trim();
         Log.d("share-location",dbPath);
         return super.onStartCommand(intent, flags, startId);
     }
@@ -104,8 +104,9 @@ public class TrackerService extends Service {
                     if (location != null) {
                         Log.d(TAG, "location update " + location);
                         locationData.put("location",new GeoPoint(location.getLatitude(),location.getLongitude()));
-                        locationData.put("timestamp", FieldValue.serverTimestamp());
-                        db.document(dbPath).set(locationData);
+                        locationData.put("time", FieldValue.serverTimestamp());
+                        dbPath = "trains/1/locations/1";
+                        db.document(dbPath).update(locationData);
                     }
                 }
             }, null);

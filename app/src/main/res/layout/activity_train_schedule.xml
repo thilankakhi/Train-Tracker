@@ -28,22 +28,6 @@
             android:padding="10dp"
             android:src="@drawable/left" />
 
-        <ImageView
-            android:id="@+id/share"
-            android:layout_width="wrap_content"
-            android:layout_height="29dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="200dp"
-            android:src="@drawable/ic_action_share" />
-
-        <ImageView
-            android:id="@+id/home"
-            android:layout_width="wrap_content"
-            android:layout_height="29dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="70dp"
-            android:src="@drawable/ic_action_home" />
-
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

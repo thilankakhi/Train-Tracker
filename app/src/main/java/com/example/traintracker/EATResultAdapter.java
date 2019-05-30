@@ -24,9 +24,9 @@ public class EATResultAdapter extends RecyclerView.Adapter<EATResultAdapter.View
     public void onBindViewHolder(final EATResultAdapter.ViewHolder viewHolder, int i) {
         EATListItem listItem = listItems.get(i);
         viewHolder.station.setText(listItem.getStation());
-        viewHolder.scheduledTime.setText(listItem.getScheduledTime());
+//        viewHolder.scheduledTime.setText(listItem.getExpectedTime());
         viewHolder.expectedTime.setText(listItem.getExpectedTime());
-        viewHolder.delay.setText(listItem.getDelay());
+        //viewHolder.delay.setText(listItem.getDelay());
 
     }
 
@@ -45,9 +45,9 @@ public class EATResultAdapter extends RecyclerView.Adapter<EATResultAdapter.View
             super(itemView);
 
             station = itemView.findViewById(R.id.station);
-            scheduledTime = itemView.findViewById(R.id.scheduled_time);
+//            scheduledTime = itemView.findViewById(R.id.scheduled_time);
             expectedTime = itemView.findViewById(R.id.expected_time);
-            delay = itemView.findViewById(R.id.delay);
+            //delay = itemView.findViewById(R.id.delay);
         }
     }
 

@@ -56,22 +56,12 @@ public class View_v extends AppCompatActivity {
         String intentFragment = getIntent().getStringExtra("frgToLoad");
         switch (intentFragment){
             case "ViewCurrentLocation":
-                replaceFragment(new ViewCurrentLocation());
+                viewPager.setCurrentItem(0);
                 break;
             case "ViewExpectedArrivalTimes":
-                replaceFragment(new ViewExpectedTimes());
+                viewPager.setCurrentItem(1);
                 break;
         }
 
     }
-    public void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.pager, fragment);
-        fragmentTransaction.addToBackStack(fragment.toString());
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
-    }
 }
-
-

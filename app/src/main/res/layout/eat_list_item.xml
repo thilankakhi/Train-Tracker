@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="150dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="8dp">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:alpha="0.8"/>
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#00000000"
-        app:cardElevation="10dp">
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,45 +27,50 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2">
 
+                <ImageView
+                    android:id="@+id/location_icon"
+                    android:layout_width="62dp"
+                    android:layout_height="57dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="24dp"
+                    android:src="@drawable/ic_action_station"
+                    android:layout_marginBottom="8dp"/>
                 <TextView
                     android:id="@+id/station"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/train_state"
+                    android:text="Intro"
+                    android:layout_below="@id/location_icon"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="49dp"
-                    android:text="Intro" />
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="24dp"
+                android:layout_gravity="">
                 <TextView
-                    android:id="@+id/scheduled_time"
+                    android:id="@+id/expected_time_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Heading" />
+                    android:text="Expected Arrival Time"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
                 <TextView
                     android:id="@+id/expected_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Intro"
-                    android:layout_below="@id/scheduled_time"/>
-                <TextView
-                    android:id="@+id/delay"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Intro"
-                    android:layout_below="@id/expected_time"/>
+                    android:layout_below="@id/expected_time_title"/>
 
             </RelativeLayout>
-
-
         </LinearLayout>
 
 
     </android.support.v7.widget.CardView>
 
-</LinearLayout>
+</RelativeLayout>
